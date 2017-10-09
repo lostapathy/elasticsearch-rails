@@ -397,13 +397,16 @@ module Elasticsearch
             else
               changed_attributes
             end
-
-            client.update(
-              { index: index_name,
-                type:  document_type,
-                id:    self.id,
-                body:  { doc: attributes } }.merge(options)
-            )
+            begin
+              client.update(
+                { index: index_name,
+                  type:  document_type,
+                  id:    self.id,
+                  body:  { doc: attributes } }.merge(options)
+              )
+            rescue Elasticsearch::Transport::Transport::Errors::NotFound
+              index_document(options)
+            end
           else
             index_document(options)
           end
