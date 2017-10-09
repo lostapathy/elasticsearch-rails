@@ -144,7 +144,11 @@ module Elasticsearch
           # Return the current page
           #
           def current_page
-            search.definition[:from] / per_page + 1 if search.definition[:from] && per_page
+            if search.definition[:from] && per_page
+              search.definition[:from] / per_page + 1
+            else
+              1
+            end
           end
 
           # Pagination method
