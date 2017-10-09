@@ -169,7 +169,7 @@ module Elasticsearch
           #
           def per_page(num = nil)
             if num.nil?
-              search.definition[:size]
+              search.definition[:size] || 10
             else
               paginate(page: current_page, per_page: num) # shorthand
             end
